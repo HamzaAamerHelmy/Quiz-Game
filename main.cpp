@@ -4,10 +4,19 @@ using namespace std;
 
 enum enQuestionsLevel
 {
-    Easy = 1,
-    Med = 2,
-    Hard = 3,
-    Mix = 4
+    easy = 1,
+    med = 2,
+    hard = 3,
+    mix = 4
+};
+
+enum enOpType
+{
+    add = 1,
+    sub = 2,
+    mul = 3,
+    div = 4,
+    mix = 5
 };
 
 void readNumberOfQuestions(int &numOfQuestions)
@@ -27,6 +36,8 @@ enQuestionsLevel readQuestionsLevel(enQuestionsLevel questionsLevel)
 
     return questionsLevel;
 }
+
+
 
 int main()
 {
