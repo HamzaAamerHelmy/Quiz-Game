@@ -37,7 +37,17 @@ enQuestionsLevel readQuestionsLevel(enQuestionsLevel questionsLevel)
     return questionsLevel;
 }
 
+enOpType readOperationType(enOpType opType)
+{
+    int userInput = 0;
 
+    cout << "Enter Operation Type [1]:Add, [2]:Sub, [3]:Mul, [4]:Div, [5]:Mix : ";
+    cin >> userInput;
+
+    opType = (enOpType)userInput;
+    
+    return opType;
+}
 
 int main()
 {
