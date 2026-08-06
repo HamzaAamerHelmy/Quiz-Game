@@ -4,10 +4,10 @@ using namespace std;
 
 enum enQuestionsLevel
 {
-    easy = 1,
-    med = 2,
-    hard = 3,
-    mix = 4
+    Easy = 1,
+    Med = 2,
+    Hard = 3,
+    Mix = 4
 };
 
 enum enOpType
