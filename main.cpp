@@ -19,12 +19,13 @@ enum enOpType
     Mix = 5
 };
 
-struct QuestionInfo
+struct stQuestionInfo
 {
     int firstNumber = 0;
     enOpType opType;
     int secondNumber = 0;
     enQuestionsLevel questionsLevel;
+    int numberOfThisRound
 };
 
 
