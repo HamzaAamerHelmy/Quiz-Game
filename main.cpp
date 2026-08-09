@@ -25,7 +25,7 @@ struct stQuestionInfo
     enOpType opType;
     int secondNumber = 0;
     enQuestionsLevel questionsLevel;
-    int numberOfThisRound
+    int numberOfThisRound = 0;
 };
 
 
