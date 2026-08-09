@@ -19,6 +19,15 @@ enum enOpType
     Mix = 5
 };
 
+struct QuestionInfo
+{
+    int firstNumber = 0;
+    enOpType opType;
+    int secondNumber = 0;
+    enQuestionsLevel questionsLevel;
+};
+
+
 void readNumberOfQuestions(int &numOfQuestions)
 {
     cout << "Enter Number Of Questions: ";
@@ -36,8 +45,8 @@ enQuestionsLevel readQuestionsLevel(enQuestionsLevel questionsLevel)
     
         if (userInput < 1 || userInput > 4)
         {
-            cout << "Wrong Input!" << endl;
-            cout << "Please Enter a vaild Number!" << endl;
+            cout << "\nWrong Input!" << endl;
+            cout << "Please Enter a vaild Number!" << endl << endl;
             continue;
         }   
     
@@ -52,10 +61,23 @@ enOpType readOperationType(enOpType opType)
 {
     int userInput = 0;
 
-    cout << "Enter Operation Type [1]:Add, [2]:Sub, [3]:Mul, [4]:Div, [5]:Mix : ";
-    cin >> userInput;
+    
+    do
+    {
+        cout << "Enter Operation Type [1]:Add, [2]:Sub, [3]:Mul, [4]:Div, [5]:Mix : ";
+        cin >> userInput;
 
-    opType = (enOpType)userInput;
+        if (userInput < 1 || userInput > 5)
+        {
+            cout << "\nWrong Input!" << endl;
+            cout << "Please Enter a vaild Number!" << endl << endl;
+            continue;
+        }
+        
+        opType = (enOpType)userInput;
+    } while (userInput < 1 || userInput > 5);
+    
+
     
     return opType;
 }
