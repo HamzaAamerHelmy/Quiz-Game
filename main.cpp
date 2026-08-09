@@ -143,6 +143,10 @@ stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions)
     questionInfo.secondNumber = random;
     
     cout << "Question [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl << endl;
+    cout << questionInfo.firstNumber << endl;
+    cout << questionInfo.secondNumber << " " << questionInfo.opType << endl;
+    
+    return questionInfo;
 }
 
 int main()
@@ -163,6 +167,8 @@ int main()
     enOpType opType = readOperationType(questionInfo.opType);
 
     cout << opType << endl;
+
+    questionInfo = readRound(questionInfo, numOfQuestions);
     
     return 0;
 }
