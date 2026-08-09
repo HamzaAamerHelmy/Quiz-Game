@@ -28,6 +28,26 @@ struct stQuestionInfo
     int numberOfThisRound = 0;
 };
 
+int randomNumber(int from, int to)
+{
+    int randNumber = rand() % (to - from) + from;
+
+    return randNumber;
+}
+
+enOpType randomOpType(int from, int to)
+{
+    int randOpType = rand() % (to - from) + from;
+
+    return (enOpType)randOpType;
+}
+
+enQuestionsLevel randomQuestionsLevel(int from, int to)
+{
+    int randQuestionsLevel = rand() % (to - from) + from;
+
+    return (enQuestionsLevel)randQuestionsLevel;
+}
 
 void readNumberOfQuestions(int &numOfQuestions)
 {
@@ -83,11 +103,29 @@ enOpType readOperationType(enOpType opType)
     return opType;
 }
 
+stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions)
+{
+    if (readOperationType(questionInfo.opType) == enOpType::Mix)
+    {
+        questionInfo.opType = randomOpType(enOpType::Add, enOpType::Mix);
+    }
+
+    if (readQuestionsLevel(questionInfo.questionsLevel) == enQuestionsLevel::mix)
+    {
+        questionInfo.questionsLevel = randomQuestionsLevel(enQuestionsLevel::easy, enQuestionsLevel::mix);
+    }
+    
+    questionInfo.firstNumber = randomNumber(1, 11);
+    questionInfo.secondNumber = randomNumber(1, 11);
+    cout << "Question [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl << endl;
+}
+
 int main()
 {
     srand((unsigned)time(NULL));
     int numOfQuestions;
 
+    stQuestionInfo questionInfo;
     
     readNumberOfQuestions(numOfQuestions);
 
@@ -97,7 +135,7 @@ int main()
 
     cout << questionsLevel << endl;
 
-    enOpType opType = readOperationType(opType);
+    enOpType opType = readOperationType(questionInfo.opType);
 
     cout << opType << endl;
     
