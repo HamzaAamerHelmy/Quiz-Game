@@ -103,6 +103,22 @@ enOpType readOperationType(enOpType opType)
     return opType;
 }
 
+void checkEasyMedHard(stQuestionInfo questionInfo, int random)
+{
+    if (questionInfo.questionsLevel == enQuestionsLevel::easy)
+    {
+        random = randomNumber(1, 11);
+    }
+    else if (questionInfo.questionsLevel == enQuestionsLevel::med)
+    {
+        random = randomNumber(10, 51);
+    }
+    else if (questionInfo.questionsLevel == enQuestionsLevel::hard)
+    {
+        random = randomNumber(50, 101);
+    }
+}
+
 stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions)
 {
     if (readOperationType(questionInfo.opType) == enOpType::Mix)
@@ -112,11 +128,16 @@ stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions)
 
     if (readQuestionsLevel(questionInfo.questionsLevel) == enQuestionsLevel::mix)
     {
+        int random = 0;
+
         questionInfo.questionsLevel = randomQuestionsLevel(enQuestionsLevel::easy, enQuestionsLevel::mix);
+        
+        checkEasyMedHard(questionInfo, random);
+        
+        questionInfo.firstNumber = random;
+        questionInfo.secondNumber = random;
     }
     
-    questionInfo.firstNumber = randomNumber(1, 11);
-    questionInfo.secondNumber = randomNumber(1, 11);
     cout << "Question [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl << endl;
 }
 
