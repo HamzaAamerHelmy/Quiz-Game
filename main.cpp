@@ -119,15 +119,15 @@ void checkDifficulty(enQuestionsLevel questionsLevel, int random)
     }
 }
 
-stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions)
+stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions, enOpType opType, enQuestionsLevel questionsLevel)
 {
     int random = 0;
-    if (readOperationType(questionInfo.opType) == enOpType::Mix)
+    if (opType == enOpType::Mix)
     {
         questionInfo.opType = randomOpType(enOpType::Add, enOpType::Mix);
     }
 
-    if (readQuestionsLevel(questionInfo.questionsLevel) == enQuestionsLevel::mix)
+    if (questionsLevel == enQuestionsLevel::mix)
     {
         questionInfo.questionsLevel = randomQuestionsLevel(enQuestionsLevel::easy, enQuestionsLevel::mix);
         
@@ -145,7 +145,7 @@ stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions)
     cout << "Question [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl << endl;
     cout << questionInfo.firstNumber << endl;
     cout << questionInfo.secondNumber << " " << questionInfo.opType << endl;
-    
+
     return questionInfo;
 }
 
@@ -168,7 +168,7 @@ int main()
 
     cout << opType << endl;
 
-    questionInfo = readRound(questionInfo, numOfQuestions);
+    questionInfo = readRound(questionInfo, numOfQuestions, opType, questionsLevel);
     
     return 0;
 }
