@@ -103,7 +103,7 @@ enOpType readOperationType(enOpType opType)
     return opType;
 }
 
-void checkEasyMedHard(stQuestionInfo questionInfo, int random)
+void checkDifficulty(stQuestionInfo questionInfo, int random)
 {
     if (questionInfo.questionsLevel == enQuestionsLevel::easy)
     {
@@ -132,7 +132,7 @@ stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions)
 
         questionInfo.questionsLevel = randomQuestionsLevel(enQuestionsLevel::easy, enQuestionsLevel::mix);
         
-        checkEasyMedHard(questionInfo, random);
+        checkDifficulty(questionInfo, random);
         
         questionInfo.firstNumber = random;
         questionInfo.secondNumber = random;
