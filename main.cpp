@@ -29,10 +29,21 @@ enQuestionsLevel readQuestionsLevel(enQuestionsLevel questionsLevel)
 {
     int userInput = 0;
 
-    cout << "Enter Questions Level [1]:Easy, [2]:Med, [3]:Hard, [4]:Mix : ";
-    cin >> userInput;
-
-    questionsLevel = (enQuestionsLevel)userInput;
+    do
+    {
+        cout << "Enter Questions Level [1]:Easy, [2]:Med, [3]:Hard, [4]:Mix : ";
+        cin >> userInput;
+    
+        if (userInput < 1 || userInput > 4)
+        {
+            cout << "Wrong Input!" << endl;
+            cout << "Please Enter a vaild Number!" << endl;
+            continue;
+        }   
+    
+        questionsLevel = (enQuestionsLevel)userInput;
+    } while (userInput < 1 || userInput > 4);
+    
 
     return questionsLevel;
 }
@@ -56,10 +67,16 @@ int main()
 
     
     readNumberOfQuestions(numOfQuestions);
+
+    cout << numOfQuestions << endl;
     
     enQuestionsLevel questionsLevel = readQuestionsLevel(questionsLevel);
 
     cout << questionsLevel << endl;
+
+    enOpType opType = readOperationType(opType);
+
+    cout << opType << endl;
     
     return 0;
 }
