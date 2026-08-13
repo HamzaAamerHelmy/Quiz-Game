@@ -7,7 +7,8 @@ enum enQuestionsLevel
     easy = 1,
     med = 2,
     hard = 3,
-    mix = 4
+    mix = 4,
+    other = 5
 };
 
 enum enOpType
@@ -16,7 +17,8 @@ enum enOpType
     Sub = 2,
     Mul = 3,
     Div = 4,
-    Mix = 5
+    Mix = 5,
+    Other = 6
 };
 
 struct stQuestionInfo
@@ -64,7 +66,9 @@ enQuestionsLevel readQuestionsLevel()
 
     do
     {
-        cout << "Enter Questions Level [1]:Easy, [2]:Med, [3]:Hard, [4]:Mix : ";
+        cout << "\nSelect Questions Level:" << endl;
+        cout << "    [1]:Easy\n    [2]:Med\n    [3]:Hard\n    [4]:Mix" << endl;
+        cout << "Enter Choose: ";
         cin >> userInput;
     
         if (userInput < 1 || userInput > 4)
@@ -89,7 +93,9 @@ enOpType readOperationType()
     
     do
     {
-        cout << "Enter Operation Type [1]:Add, [2]:Sub, [3]:Mul, [4]:Div, [5]:Mix : ";
+        cout << "\nSelect Operation Type:" << endl;
+        cout << "   [1]:Add\n   [2]:Sub\n   [3]:Mul\n   [4]:Div\n   [5]:Mix" << endl;
+        cout << "Enter Choose: ";
         cin >> userInput;
 
         if (userInput < 1 || userInput > 5)
@@ -154,23 +160,16 @@ stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions)
     if (questionInfo.opType == enOpType::Mix)
     {
         questionInfo.opType = randomOpType(enOpType::Add, enOpType::Mix);
-        questionInfo.operation = checkOpType(questionInfo.opType);
     }
-
-        questionInfo.operation = checkOpType(questionInfo.opType);
+    questionInfo.operation = checkOpType(questionInfo.opType);
 
     if (questionInfo.questionsLevel == enQuestionsLevel::mix)
     {
         questionInfo.questionsLevel = randomQuestionsLevel(enQuestionsLevel::easy, enQuestionsLevel::mix);
-        
-        questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
     }
-    else
-    {
-        questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
-    }
+    questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
 
-    cout << "Question [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl << endl;
+    cout << "\nQuestion [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl;
     cout << questionInfo.firstNumber << endl;
     cout << questionInfo.secondNumber << " " << questionInfo.operation << endl;
     cout << "----------------" << endl;
@@ -234,12 +233,11 @@ void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestio
     for (int i = 1; i <= numOfQuestions; i++)
     {
         questionInfo.numberOfThisRound = i;
-
+        
         questionInfo = readQuestion(questionInfo, numOfQuestions);
-
+        
         printCheckAnswer(questionInfo);
-    }
-    
+    }    
 }
 
 int main()
