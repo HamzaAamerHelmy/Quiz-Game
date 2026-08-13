@@ -231,7 +231,7 @@ void printCheckAnswer(stQuestionInfo questionInfo)
 
 void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestions)
 {
-    for (int i = 1; i < numOfQuestions; i++)
+    for (int i = 1; i <= numOfQuestions; i++)
     {
         questionInfo.numberOfThisRound = i;
 
