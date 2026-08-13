@@ -7,8 +7,7 @@ enum enQuestionsLevel
     easy = 1,
     med = 2,
     hard = 3,
-    mix = 4,
-    other = 5
+    mix = 4
 };
 
 enum enOpType
@@ -17,8 +16,7 @@ enum enOpType
     Sub = 2,
     Mul = 3,
     Div = 4,
-    Mix = 5,
-    Other = 6
+    Mix = 5
 };
 
 struct stQuestionInfo
