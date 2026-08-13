@@ -26,6 +26,8 @@ struct stQuestionInfo
     int secondNumber = 0;
     enQuestionsLevel questionsLevel;
     int numberOfThisRound = 0;
+    int answer = 0;
+    char operation;
 };
 
 int randomNumber(int from, int to)
@@ -55,8 +57,9 @@ void readNumberOfQuestions(int &numOfQuestions)
     cin >> numOfQuestions;
 }
 
-enQuestionsLevel readQuestionsLevel(enQuestionsLevel questionsLevel)
+enQuestionsLevel readQuestionsLevel()
 {
+    enQuestionsLevel questionsLevel;
     int userInput = 0;
 
     do
@@ -78,8 +81,9 @@ enQuestionsLevel readQuestionsLevel(enQuestionsLevel questionsLevel)
     return questionsLevel;
 }
 
-enOpType readOperationType(enOpType opType)
+enOpType readOperationType()
 {
+    enOpType opType;
     int userInput = 0;
 
     
@@ -103,50 +107,111 @@ enOpType readOperationType(enOpType opType)
     return opType;
 }
 
-void checkDifficulty(enQuestionsLevel questionsLevel, int random)
+stQuestionInfo checkDifficulty(enQuestionsLevel questionsLevel, stQuestionInfo questionInfo)
 {
-    if (questionsLevel == enQuestionsLevel::easy)
+    switch (questionsLevel)
     {
-        random = randomNumber(1, 11);
+    case enQuestionsLevel::easy:
+        questionInfo.firstNumber = randomNumber(1, 11);
+        questionInfo.secondNumber = randomNumber(1, 11);
+        break;
+    case enQuestionsLevel::med:
+        questionInfo.firstNumber = randomNumber(10, 51);
+        questionInfo.secondNumber = randomNumber(10, 51);
+        break;
+    case enQuestionsLevel::hard:
+        questionInfo.firstNumber = randomNumber(50, 101);
+        questionInfo.secondNumber = randomNumber(50, 101);
+        break;
     }
-    else if (questionsLevel == enQuestionsLevel::med)
-    {
-        random = randomNumber(10, 51);
-    }
-    else if (questionsLevel == enQuestionsLevel::hard)
-    {
-        random = randomNumber(50, 101);
-    }
+    return questionInfo;
 }
 
-stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions, enOpType opType, enQuestionsLevel questionsLevel)
+char checkOpType(enOpType opType)
 {
-    int random = 0;
-    if (opType == enOpType::Mix)
+    char operation;
+    switch (opType)
     {
-        questionInfo.opType = randomOpType(enOpType::Add, enOpType::Mix);
+    case enOpType::Add:
+        operation = '+';
+        break;
+    case enOpType::Sub:
+        operation = '-';
+        break;
+    case enOpType::Mul:
+        operation = 'x';
+        break;
+    case enOpType::Div:
+        operation = '/';
+        break;
     }
 
-    if (questionsLevel == enQuestionsLevel::mix)
+    return operation;
+}
+
+stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions)
+{
+    if (questionInfo.opType == enOpType::Mix)
+    {
+        questionInfo.opType = randomOpType(enOpType::Add, enOpType::Mix);
+        questionInfo.operation = checkOpType(questionInfo.opType);
+    }
+
+        questionInfo.operation = checkOpType(questionInfo.opType);
+
+    if (questionInfo.questionsLevel == enQuestionsLevel::mix)
     {
         questionInfo.questionsLevel = randomQuestionsLevel(enQuestionsLevel::easy, enQuestionsLevel::mix);
         
-        checkDifficulty(questionInfo.questionsLevel, random);
-        
-        questionInfo.firstNumber = random;
-        questionInfo.secondNumber = random;
+        questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
+    }
+    else
+    {
+        questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
     }
 
-    checkDifficulty(questionInfo.questionsLevel, random);
-
-    questionInfo.firstNumber = random;
-    questionInfo.secondNumber = random;
-    
     cout << "Question [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl << endl;
     cout << questionInfo.firstNumber << endl;
-    cout << questionInfo.secondNumber << " " << questionInfo.opType << endl;
+    cout << questionInfo.secondNumber << " " << questionInfo.operation << endl;
+    cout << "----------------" << endl;
+    cin >> questionInfo.answer;
 
     return questionInfo;
+}
+
+int getResultOfQuestion(stQuestionInfo questionInfo)
+{
+    int result = 0;
+    switch (questionInfo.operation)
+    {
+    case '+':
+        result = questionInfo.firstNumber + questionInfo.secondNumber;
+        break;
+    case '-':
+        result = questionInfo.firstNumber - questionInfo.secondNumber;
+        break;
+    case 'x':
+        result = questionInfo.firstNumber * questionInfo.secondNumber;
+        break;
+    case '/':
+        result = questionInfo.firstNumber / questionInfo.secondNumber;
+        break;
+    }
+
+    return result;
+}
+
+bool checkAnswer(int answer)
+{
+    stQuestionInfo questionInfo;
+    if (answer == getResultOfQuestion(questionInfo))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 int main()
@@ -157,18 +222,12 @@ int main()
     stQuestionInfo questionInfo;
     
     readNumberOfQuestions(numOfQuestions);
-
-    cout << numOfQuestions << endl;
     
-    enQuestionsLevel questionsLevel = readQuestionsLevel(questionsLevel);
+    questionInfo.questionsLevel = readQuestionsLevel();
 
-    cout << questionsLevel << endl;
+    questionInfo.opType = readOperationType();
 
-    enOpType opType = readOperationType(questionInfo.opType);
-
-    cout << opType << endl;
-
-    questionInfo = readRound(questionInfo, numOfQuestions, opType, questionsLevel);
+    questionInfo = readRound(questionInfo, numOfQuestions);
     
     return 0;
 }
