@@ -179,32 +179,32 @@ stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions)
     return questionInfo;
 }
 
-int getResultOfQuestion(stQuestionInfo questionInfo)
+int getAnswerOfQuestion(stQuestionInfo questionInfo)
 {
-    int result = 0;
+    int answer = 0;
     switch (questionInfo.operation)
     {
     case '+':
-        result = questionInfo.firstNumber + questionInfo.secondNumber;
+        answer = questionInfo.firstNumber + questionInfo.secondNumber;
         break;
     case '-':
-        result = questionInfo.firstNumber - questionInfo.secondNumber;
+        answer = questionInfo.firstNumber - questionInfo.secondNumber;
         break;
     case 'x':
-        result = questionInfo.firstNumber * questionInfo.secondNumber;
+        answer = questionInfo.firstNumber * questionInfo.secondNumber;
         break;
     case '/':
-        result = questionInfo.firstNumber / questionInfo.secondNumber;
+        answer = questionInfo.firstNumber / questionInfo.secondNumber;
         break;
     }
 
-    return result;
+    return answer;
 }
 
 bool checkAnswer(int answer)
 {
     stQuestionInfo questionInfo;
-    if (answer == getResultOfQuestion(questionInfo))
+    if (answer == getAnswerOfQuestion(questionInfo))
     {
         return true;
     }
@@ -212,6 +212,16 @@ bool checkAnswer(int answer)
     {
         return false;
     }
+}
+
+void printCheckAnswer()
+{
+    stQuestionInfo questionInfo;
+    if (checkAnswer(questionInfo.answer))
+    {
+        cout << "Right Answer :)" << endl;
+    }
+    
 }
 
 int main()
