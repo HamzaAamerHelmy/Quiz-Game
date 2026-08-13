@@ -149,7 +149,7 @@ char checkOpType(enOpType opType)
     return operation;
 }
 
-stQuestionInfo readRound(stQuestionInfo questionInfo, int numOfQuestions)
+stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions)
 {
     if (questionInfo.opType == enOpType::Mix)
     {
@@ -201,9 +201,8 @@ int getAnswerOfQuestion(stQuestionInfo questionInfo)
     return answer;
 }
 
-bool checkAnswer(int answer)
+bool checkAnswer(int answer, stQuestionInfo questionInfo)
 {
-    stQuestionInfo questionInfo;
     if (answer == getAnswerOfQuestion(questionInfo))
     {
         return true;
@@ -216,7 +215,7 @@ bool checkAnswer(int answer)
 
 void printCheckAnswer(stQuestionInfo questionInfo)
 {
-    if (checkAnswer(questionInfo.answer))
+    if (checkAnswer(questionInfo.answer, questionInfo))
     {
         cout << "Right Answer :)" << endl;
         system("color 2F");
@@ -225,6 +224,7 @@ void printCheckAnswer(stQuestionInfo questionInfo)
     {
         cout << "Wrong Answer :(" << endl;
         cout << "The Right Answer is: " << getAnswerOfQuestion(questionInfo) << endl;
+
         system("color 4F");
     }
 }
@@ -235,7 +235,7 @@ void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestio
     {
         questionInfo.numberOfThisRound = i;
 
-        questionInfo = readRound(questionInfo, numOfQuestions);
+        questionInfo = readQuestion(questionInfo, numOfQuestions);
 
         printCheckAnswer(questionInfo);
     }
