@@ -214,34 +214,31 @@ bool checkAnswer(int answer)
     }
 }
 
-void printCheckAnswer()
+void printCheckAnswer(stQuestionInfo questionInfo)
 {
-    stQuestionInfo questionInfo;
     if (checkAnswer(questionInfo.answer))
     {
+        cout << questionInfo.answer << endl;
         cout << "Right Answer :)" << endl;
+        system("color 2F");
     }
     else
     {
+        cout << questionInfo.answer << endl;
         cout << "Wrong Answer :(" << endl;
         cout << "The Right Answer is: " << getAnswerOfQuestion << endl;
+        system("color 4F");
     }
 }
 
 void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestions)
 {
-    for (int i = 1; i < numOfQuestions; i++)
-    {
-        questionInfo.numberOfThisRound = i;
 
-        questionInfo = readRound(questionInfo, numOfQuestions);
-    
-        printCheckAnswer();
-    }
 }
 
 int main()
 {
+    system("color 0F");
     srand((unsigned)time(NULL));
     int numOfQuestions;
 
@@ -253,7 +250,14 @@ int main()
 
     questionInfo.opType = readOperationType();
 
-    readAndPrintMultipleQuestions(questionInfo, numOfQuestions);
+    // readAndPrintMultipleQuestions(questionInfo, numOfQuestions);
+        questionInfo.numberOfThisRound = 1;
+
+        questionInfo = readRound(questionInfo, numOfQuestions);
+
+        cout << questionInfo.answer << endl;
+
+        printCheckAnswer(questionInfo);
     
     return 0;
 }
