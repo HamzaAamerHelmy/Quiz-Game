@@ -186,15 +186,19 @@ int getAnswerOfQuestion(stQuestionInfo questionInfo)
     {
     case '+':
         answer = questionInfo.firstNumber + questionInfo.secondNumber;
+        cout << answer << endl;
         break;
     case '-':
         answer = questionInfo.firstNumber - questionInfo.secondNumber;
+        cout << answer << endl;
         break;
     case 'x':
         answer = questionInfo.firstNumber * questionInfo.secondNumber;
+        cout << answer << endl;
         break;
     case '/':
         answer = questionInfo.firstNumber / questionInfo.secondNumber;
+        cout << answer << endl;
         break;
     }
 
@@ -226,14 +230,24 @@ void printCheckAnswer(stQuestionInfo questionInfo)
     {
         cout << questionInfo.answer << endl;
         cout << "Wrong Answer :(" << endl;
-        cout << "The Right Answer is: " << getAnswerOfQuestion << endl;
+        cout << "The Right Answer is: " << getAnswerOfQuestion(questionInfo) << endl;
         system("color 4F");
     }
 }
 
 void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestions)
 {
+    for (int i = 1; i < numOfQuestions; i++)
+    {
+        questionInfo.numberOfThisRound = i;
 
+        questionInfo = readRound(questionInfo, numOfQuestions);
+
+        cout << questionInfo.answer << endl;
+
+        printCheckAnswer(questionInfo);
+    }
+    
 }
 
 int main()
@@ -250,14 +264,7 @@ int main()
 
     questionInfo.opType = readOperationType();
 
-    // readAndPrintMultipleQuestions(questionInfo, numOfQuestions);
-        questionInfo.numberOfThisRound = 1;
-
-        questionInfo = readRound(questionInfo, numOfQuestions);
-
-        cout << questionInfo.answer << endl;
-
-        printCheckAnswer(questionInfo);
+    readAndPrintMultipleQuestions(questionInfo, numOfQuestions);     
     
     return 0;
 }
