@@ -221,7 +221,11 @@ void printCheckAnswer()
     {
         cout << "Right Answer :)" << endl;
     }
-    
+    else
+    {
+        cout << "Wrong Answer :(" << endl;
+        cout << "The Right Answer is: " << getAnswerOfQuestion << endl;
+    }
 }
 
 int main()
@@ -238,6 +242,8 @@ int main()
     questionInfo.opType = readOperationType();
 
     questionInfo = readRound(questionInfo, numOfQuestions);
+
+    printCheckAnswer();
     
     return 0;
 }
