@@ -228,6 +228,18 @@ void printCheckAnswer()
     }
 }
 
+void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestions)
+{
+    for (int i = 1; i < numOfQuestions; i++)
+    {
+        questionInfo.numberOfThisRound = i;
+
+        questionInfo = readRound(questionInfo, numOfQuestions);
+    
+        printCheckAnswer();
+    }
+}
+
 int main()
 {
     srand((unsigned)time(NULL));
@@ -241,9 +253,7 @@ int main()
 
     questionInfo.opType = readOperationType();
 
-    questionInfo = readRound(questionInfo, numOfQuestions);
-
-    printCheckAnswer();
+    readAndPrintMultipleQuestions(questionInfo, numOfQuestions);
     
     return 0;
 }
