@@ -186,19 +186,15 @@ int getAnswerOfQuestion(stQuestionInfo questionInfo)
     {
     case '+':
         answer = questionInfo.firstNumber + questionInfo.secondNumber;
-        cout << answer << endl;
         break;
     case '-':
         answer = questionInfo.firstNumber - questionInfo.secondNumber;
-        cout << answer << endl;
         break;
     case 'x':
         answer = questionInfo.firstNumber * questionInfo.secondNumber;
-        cout << answer << endl;
         break;
     case '/':
         answer = questionInfo.firstNumber / questionInfo.secondNumber;
-        cout << answer << endl;
         break;
     }
 
@@ -242,8 +238,6 @@ void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestio
         questionInfo.numberOfThisRound = i;
 
         questionInfo = readRound(questionInfo, numOfQuestions);
-
-        cout << questionInfo.answer << endl;
 
         printCheckAnswer(questionInfo);
     }
