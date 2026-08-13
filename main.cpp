@@ -218,13 +218,11 @@ void printCheckAnswer(stQuestionInfo questionInfo)
 {
     if (checkAnswer(questionInfo.answer))
     {
-        cout << questionInfo.answer << endl;
         cout << "Right Answer :)" << endl;
         system("color 2F");
     }
     else
     {
-        cout << questionInfo.answer << endl;
         cout << "Wrong Answer :(" << endl;
         cout << "The Right Answer is: " << getAnswerOfQuestion(questionInfo) << endl;
         system("color 4F");
