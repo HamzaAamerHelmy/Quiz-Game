@@ -160,14 +160,24 @@ stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions)
     if (questionInfo.opType == enOpType::Mix)
     {
         opType = randomOpType(enOpType::Add, enOpType::Mix);
+        questionInfo.operation = checkOpType(opType);
     }
-    questionInfo.operation = checkOpType(opType);
+    else
+    {
+        questionInfo.operation = checkOpType(questionInfo.opType);
+    }
+    
 
     if (questionInfo.questionsLevel == enQuestionsLevel::mix)
     {
         questionsLevel = randomQuestionsLevel(enQuestionsLevel::easy, enQuestionsLevel::mix);
+        questionInfo = checkDifficulty(questionsLevel, questionInfo);
     }
-    questionInfo = checkDifficulty(questionsLevel, questionInfo);
+    else
+    {
+        questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
+    }
+    
 
     cout << "\nQuestion [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl;
     cout << questionInfo.firstNumber << endl;
