@@ -155,17 +155,19 @@ char checkOpType(enOpType opType)
 
 stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions)
 {
+    enOpType opType;
+    enQuestionsLevel questionsLevel;
     if (questionInfo.opType == enOpType::Mix)
     {
-        questionInfo.opType = randomOpType(enOpType::Add, enOpType::Mix);
+        opType = randomOpType(enOpType::Add, enOpType::Mix);
     }
-    questionInfo.operation = checkOpType(questionInfo.opType);
+    questionInfo.operation = checkOpType(opType);
 
     if (questionInfo.questionsLevel == enQuestionsLevel::mix)
     {
-        questionInfo.questionsLevel = randomQuestionsLevel(enQuestionsLevel::easy, enQuestionsLevel::mix);
+        questionsLevel = randomQuestionsLevel(enQuestionsLevel::easy, enQuestionsLevel::mix);
     }
-    questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
+    questionInfo = checkDifficulty(questionsLevel, questionInfo);
 
     cout << "\nQuestion [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl;
     cout << questionInfo.firstNumber << endl;
