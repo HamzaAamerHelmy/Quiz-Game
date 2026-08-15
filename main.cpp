@@ -30,6 +30,9 @@ struct stQuestionInfo
     char operation;
 };
 
+int numOfRightAnswers = 0;
+int numOfWrongAnswers = 0;
+
 int randomNumber(int from, int to)
 {
     int randNumber = rand() % (to - from) + from;
