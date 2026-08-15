@@ -1,6 +1,12 @@
 #include <iostream>
 #include <cstdlib>
+#include <windows.h>
 using namespace std;
+
+void mySleep(int duration)
+{
+    Sleep(duration);
+}
 
 enum enQuestionsLevel
 {
@@ -71,17 +77,17 @@ enQuestionsLevel readQuestionsLevel()
         cout << "    [1]:Easy\n    [2]:Med\n    [3]:Hard\n    [4]:Mix" << endl;
         cout << "Enter Choose: ";
         cin >> userInput;
-    
+
         if (userInput < 1 || userInput > 4)
         {
             cout << "\nWrong Input!" << endl;
-            cout << "Please Enter a vaild Number!" << endl << endl;
+            cout << "Please Enter a vaild Number!" << endl
+                 << endl;
             continue;
-        }   
-    
+        }
+
         questionsLevel = (enQuestionsLevel)userInput;
     } while (userInput < 1 || userInput > 4);
-    
 
     return questionsLevel;
 }
@@ -91,7 +97,6 @@ enOpType readOperationType()
     enOpType opType;
     int userInput = 0;
 
-    
     do
     {
         cout << "\nSelect Operation Type:" << endl;
@@ -102,15 +107,14 @@ enOpType readOperationType()
         if (userInput < 1 || userInput > 5)
         {
             cout << "\nWrong Input!" << endl;
-            cout << "Please Enter a vaild Number!" << endl << endl;
+            cout << "Please Enter a vaild Number!" << endl
+                 << endl;
             continue;
         }
-        
+
         opType = (enOpType)userInput;
     } while (userInput < 1 || userInput > 5);
-    
 
-    
     return opType;
 }
 
@@ -156,10 +160,8 @@ char checkOpType(enOpType opType)
     return operation;
 }
 
-stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions)
+stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions, enOpType opType, enQuestionsLevel questionsLevel)
 {
-    enOpType opType;
-    enQuestionsLevel questionsLevel;
     if (questionInfo.opType == enOpType::Mix)
     {
         opType = randomOpType(enOpType::Add, enOpType::Mix);
@@ -169,7 +171,6 @@ stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions)
     {
         questionInfo.operation = checkOpType(questionInfo.opType);
     }
-    
 
     if (questionInfo.questionsLevel == enQuestionsLevel::mix)
     {
@@ -180,7 +181,6 @@ stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions)
     {
         questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
     }
-    
 
     cout << "\nQuestion [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl;
     cout << questionInfo.firstNumber << endl;
@@ -231,27 +231,148 @@ void printCheckAnswer(stQuestionInfo questionInfo)
     {
         cout << "Right Answer :)" << endl;
         system("color 2F");
+        numOfRightAnswers++;
     }
     else
     {
         cout << "\a";
         cout << "Wrong Answer :(" << endl;
         cout << "The Right Answer is: " << getAnswerOfQuestion(questionInfo) << endl;
-
         system("color 4F");
+        numOfWrongAnswers++;
     }
 }
 
 void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestions)
 {
+    enOpType opType;
+    enQuestionsLevel questionsLevel;
     for (int i = 1; i <= numOfQuestions; i++)
     {
         questionInfo.numberOfThisRound = i;
-        
-        questionInfo = readQuestion(questionInfo, numOfQuestions);
-        
+
+        questionInfo = readQuestion(questionInfo, numOfQuestions, opType, questionsLevel);
+
         printCheckAnswer(questionInfo);
     }
+    if (questionInfo.opType == enOpType::Mix)
+    {
+        return;
+    }
+
+    questionInfo.opType = opType;
+
+    if (questionInfo.questionsLevel == enQuestionsLevel::mix)
+    {
+        return;
+    }
+
+    questionInfo.questionsLevel = questionsLevel;
+}
+
+string getQuestionsLevel(enQuestionsLevel questionsLevel)
+{
+    switch (questionsLevel)
+    {
+    case enQuestionsLevel::easy:
+        return "Easy";
+    case enQuestionsLevel::med:
+        return "Medium";
+    case enQuestionsLevel::hard:
+        return "Hard";
+    }
+
+    return "Wrong";
+}
+
+string getOpType(enOpType opType)
+{
+    switch (opType)
+    {
+    case enOpType::Add:
+        return "Add";
+    case enOpType::Sub:
+        return "Subtraction";
+    case enOpType::Mul:
+        return "Multiplication";
+    case enOpType::Div:
+        return "Divided";
+    }
+
+    return "Wrong";
+}
+
+void playLoseSound()
+{
+    mySleep(1000);
+
+    Beep(650, 250);
+    mySleep(70);
+
+    Beep(500, 250);
+    mySleep(70);
+
+    Beep(300, 900);
+}
+
+void playDrawSound()
+{
+    Beep(550, 300);
+    Sleep(250);
+    Beep(550, 300);
+    Sleep(250);
+    Beep(450, 500);
+}
+
+void playWinSound()
+{
+    mySleep(1000);
+
+    Beep(784, 120);
+    mySleep(30);
+    Beep(988, 120);
+    mySleep(30);
+    Beep(1175, 180);
+    mySleep(30);
+    Beep(1568, 350);
+}
+
+void printPassOrFail(stQuestionInfo questionInfo, int numOfQuestions)
+{
+    cout << "-----------------------------------" << endl
+         << endl;
+    if (numOfRightAnswers > numOfWrongAnswers)
+    {
+        playWinSound();
+        system("color 2F");
+        cout << "    Final Results is PASS :)    " << endl
+             << endl;
+    }
+    else if (numOfRightAnswers == numOfWrongAnswers)
+    {
+        playDrawSound();
+        system("color 6F");
+        cout << "    Final Results is EQUAL :)    " << endl
+             << endl;
+    }
+    else
+    {
+        playLoseSound();
+        system("color 4F");
+        cout << "    Final Results is FAIL :(    " << endl
+             << endl;
+    }
+    cout << "-----------------------------------" << endl
+         << endl;
+
+    cout << "Number Of Questions: " << numOfQuestions << endl;
+    cout << "Questions Level    : " << getQuestionsLevel(questionInfo.questionsLevel) << endl;
+    cout << "OpType             :" << getOpType(questionInfo.opType) << endl;
+    cout << "Number Of Right Answers: " << numOfRightAnswers << endl;
+    cout << "Number Of Wrong Answers: " << numOfWrongAnswers << endl
+         << endl;
+    cout << "-----------------------------------" << endl
+         << endl;
 }
 
 int main()
@@ -261,14 +382,16 @@ int main()
     int numOfQuestions;
 
     stQuestionInfo questionInfo;
-    
+
     readNumberOfQuestions(numOfQuestions);
-    
+
     questionInfo.questionsLevel = readQuestionsLevel();
 
     questionInfo.opType = readOperationType();
 
-    readAndPrintMultipleQuestions(questionInfo, numOfQuestions);     
-    
+    readAndPrintMultipleQuestions(questionInfo, numOfQuestions);
+
+    printPassOrFail(questionInfo, numOfQuestions);
+
     return 0;
 }
