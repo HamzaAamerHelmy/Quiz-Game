@@ -231,6 +231,7 @@ void printCheckAnswer(stQuestionInfo questionInfo)
     }
     else
     {
+        cout << "\a";
         cout << "Wrong Answer :(" << endl;
         cout << "The Right Answer is: " << getAnswerOfQuestion(questionInfo) << endl;
 
