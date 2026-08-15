@@ -235,7 +235,7 @@ void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestio
         questionInfo = readQuestion(questionInfo, numOfQuestions);
         
         printCheckAnswer(questionInfo);
-    }    
+    }
 }
 
 int main()
