@@ -182,7 +182,7 @@ stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions, enO
         questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
     }
 
-    cout << "\nQuestion [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl;
+    cout << "Question [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl;
     cout << questionInfo.firstNumber << endl;
     cout << questionInfo.secondNumber << " " << questionInfo.operation << endl;
     cout << "----------------" << endl;
@@ -251,9 +251,12 @@ void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestio
     {
         questionInfo.numberOfThisRound = i;
 
+        cout << "\n==============================" << endl;
+
         questionInfo = readQuestion(questionInfo, numOfQuestions, opType, questionsLevel);
 
         printCheckAnswer(questionInfo);
+        cout << "==============================" << endl;
     }
     if (questionInfo.opType == enOpType::Mix)
     {
@@ -280,6 +283,8 @@ string getQuestionsLevel(enQuestionsLevel questionsLevel)
         return "Medium";
     case enQuestionsLevel::hard:
         return "Hard";
+    case enQuestionsLevel::mix:
+        return "Mix";
     }
 
     return "Wrong";
@@ -290,13 +295,15 @@ string getOpType(enOpType opType)
     switch (opType)
     {
     case enOpType::Add:
-        return "Add";
+        return "+";
     case enOpType::Sub:
-        return "Subtraction";
+        return "-";
     case enOpType::Mul:
-        return "Multiplication";
+        return "x";
     case enOpType::Div:
-        return "Divided";
+        return "/";
+    case enOpType::Mix:
+        return "Mix";
     }
 
     return "Wrong";
@@ -339,7 +346,7 @@ void playWinSound()
 
 void printPassOrFail(stQuestionInfo questionInfo, int numOfQuestions)
 {
-    cout << "-----------------------------------" << endl
+    cout << "\n-----------------------------------" << endl
          << endl;
     if (numOfRightAnswers > numOfWrongAnswers)
     {
@@ -367,7 +374,7 @@ void printPassOrFail(stQuestionInfo questionInfo, int numOfQuestions)
 
     cout << "Number Of Questions: " << numOfQuestions << endl;
     cout << "Questions Level    : " << getQuestionsLevel(questionInfo.questionsLevel) << endl;
-    cout << "OpType             :" << getOpType(questionInfo.opType) << endl;
+    cout << "OpType             : " << getOpType(questionInfo.opType) << endl;
     cout << "Number Of Right Answers: " << numOfRightAnswers << endl;
     cout << "Number Of Wrong Answers: " << numOfWrongAnswers << endl
          << endl;
