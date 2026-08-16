@@ -3,6 +3,12 @@
 #include <windows.h>
 using namespace std;
 
+void resetScreen()
+{
+    system("color 0F");
+    system("cls");
+}
+
 void mySleep(int duration)
 {
     Sleep(duration);
@@ -344,6 +350,20 @@ void playWinSound()
     Beep(1568, 350);
 }
 
+bool restartGame()
+{
+    string userInput = "";
+
+    cout << "Do you want To play Again (y = yes, any key = no): ";
+    cin >> userInput;
+
+    if (userInput == "y" || userInput == "Y")
+    {
+        return true;
+    }
+    return false;
+}
+
 void printPassOrFail(stQuestionInfo questionInfo, int numOfQuestions)
 {
     cout << "\n-----------------------------------" << endl
@@ -382,23 +402,33 @@ void printPassOrFail(stQuestionInfo questionInfo, int numOfQuestions)
          << endl;
 }
 
+void StartGame()
+{
+    srand((unsigned)time(NULL));
+    do
+    {
+        resetScreen();
+        int numOfQuestions;
+
+        stQuestionInfo questionInfo;
+
+        readNumberOfQuestions(numOfQuestions);
+
+        questionInfo.questionsLevel = readQuestionsLevel();
+
+        questionInfo.opType = readOperationType();
+
+        readAndPrintMultipleQuestions(questionInfo, numOfQuestions);
+
+        printPassOrFail(questionInfo, numOfQuestions);
+        
+    } while (restartGame());
+    
+}
+
 int main()
 {
-    system("color 0F");
-    srand((unsigned)time(NULL));
-    int numOfQuestions;
-
-    stQuestionInfo questionInfo;
-
-    readNumberOfQuestions(numOfQuestions);
-
-    questionInfo.questionsLevel = readQuestionsLevel();
-
-    questionInfo.opType = readOperationType();
-
-    readAndPrintMultipleQuestions(questionInfo, numOfQuestions);
-
-    printPassOrFail(questionInfo, numOfQuestions);
+    StartGame();
 
     return 0;
 }
