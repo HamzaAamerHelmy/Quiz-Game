@@ -52,20 +52,6 @@ int randomNumber(int from, int to)
     return randNumber;
 }
 
-enOpType randomOpType(int from, int to)
-{
-    int randOpType = rand() % (to - from) + from;
-
-    return (enOpType)randOpType;
-}
-
-enQuestionsLevel randomQuestionsLevel(int from, int to)
-{
-    int randQuestionsLevel = rand() % (to - from) + from;
-
-    return (enQuestionsLevel)randQuestionsLevel;
-}
-
 void readNumberOfQuestions(int &numOfQuestions)
 {
     cout << "Enter Number Of Questions: ";
@@ -170,7 +156,7 @@ stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions, enO
 {
     if (questionInfo.opType == enOpType::Mix)
     {
-        opType = randomOpType(enOpType::Add, enOpType::Mix);
+        opType = (enOpType)randomNumber(enOpType::Add, enOpType::Mix);
         questionInfo.operation = checkOpType(opType);
     }
     else
@@ -180,7 +166,7 @@ stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions, enO
 
     if (questionInfo.questionsLevel == enQuestionsLevel::mix)
     {
-        questionsLevel = randomQuestionsLevel(enQuestionsLevel::easy, enQuestionsLevel::mix);
+        questionsLevel = (enQuestionsLevel)randomNumber(enQuestionsLevel::easy, enQuestionsLevel::mix);
         questionInfo = checkDifficulty(questionsLevel, questionInfo);
     }
     else
@@ -421,9 +407,8 @@ void StartGame()
         readAndPrintMultipleQuestions(questionInfo, numOfQuestions);
 
         printPassOrFail(questionInfo, numOfQuestions);
-        
+
     } while (restartGame());
-    
 }
 
 int main()
