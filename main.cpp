@@ -375,8 +375,8 @@ void printPassOrFail(stQuestionInfo questionInfo, int numOfQuestions)
     cout << "Number Of Questions: " << numOfQuestions << endl;
     cout << "Questions Level    : " << getQuestionsLevel(questionInfo.questionsLevel) << endl;
     cout << "OpType             : " << getOpType(questionInfo.opType) << endl;
-    cout << "Number Of Right Answers: " << numOfRightAnswers << endl;
-    cout << "Number Of Wrong Answers: " << numOfWrongAnswers << endl
+    cout << "Number Of Right Answers: " << numOfRightAnswers << "/" << numOfQuestions << endl;
+    cout << "Number Of Wrong Answers: " << numOfWrongAnswers << "/" << numOfQuestions << endl
          << endl;
     cout << "-----------------------------------" << endl
          << endl;
