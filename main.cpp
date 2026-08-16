@@ -379,7 +379,7 @@ void printPassOrFail(stQuestionInfo questionInfo, int numOfQuestions)
     {
         playDrawSound();
         system("color 6F");
-        cout << "    Final Results is EQUAL :)    " << endl
+        cout << "    Final Results is NEUTRAL :)    " << endl
              << endl;
     }
     else
