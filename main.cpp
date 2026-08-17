@@ -35,15 +35,22 @@ struct stQuestionInfo
 {
     int firstNumber = 0;
     enOpType opType;
+    int numberOfThisQuestion = 0;
     int secondNumber = 0;
     enQuestionsLevel questionsLevel;
-    int numberOfThisRound = 0;
     int answer = 0;
     char operation;
 };
 
-int numOfRightAnswers = 0;
-int numOfWrongAnswers = 0;
+struct stQuiz
+{
+    int numberOfQuestions;
+    enQuestionsLevel questionsLevel;
+    enOpType opType;
+    stQuestionInfo questionList[100];
+    short numberOfWrongAnswers = 0;
+    short numberOfRightAnswers = 0;
+};
 
 int randomNumber(int from, int to)
 {
@@ -52,10 +59,23 @@ int randomNumber(int from, int to)
     return randNumber;
 }
 
-void readNumberOfQuestions(int &numOfQuestions)
+int readNumberOfQuestions()
 {
-    cout << "Enter Number Of Questions: ";
-    cin >> numOfQuestions;
+    int numOfQuestions = 0;
+
+    do
+    {
+        cout << "Enter Number Of Questions (Max 10) : ";
+        cin >> numOfQuestions;
+
+        if (numOfQuestions > 10)
+        {
+            cout << "Wrong Input ..." << endl;
+            cout << "Please Enter a vaild number!" << endl;
+        }
+    } while (numOfQuestions > 10);
+    
+    return numOfQuestions;
 }
 
 enQuestionsLevel readQuestionsLevel()
@@ -152,29 +172,38 @@ char checkOpType(enOpType opType)
     return operation;
 }
 
-stQuestionInfo readQuestion(stQuestionInfo questionInfo, int numOfQuestions, enOpType opType, enQuestionsLevel questionsLevel)
+stQuestionInfo generateQuestion(stQuiz quiz, stQuestionInfo questionInfo)
 {
-    if (questionInfo.opType == enOpType::Mix)
+    // check mix.
+    if (quiz.opType == enOpType::Mix)
     {
-        opType = (enOpType)randomNumber(enOpType::Add, enOpType::Mix);
-        questionInfo.operation = checkOpType(opType);
-    }
-    else
-    {
+        questionInfo.opType = (enOpType)randomNumber(enOpType::Add, enOpType::Mix);
         questionInfo.operation = checkOpType(questionInfo.opType);
     }
-
-    if (questionInfo.questionsLevel == enQuestionsLevel::mix)
+    else
     {
-        questionsLevel = (enQuestionsLevel)randomNumber(enQuestionsLevel::easy, enQuestionsLevel::mix);
-        questionInfo = checkDifficulty(questionsLevel, questionInfo);
+        questionInfo.operation = checkOpType(quiz.opType);
+    }
+    
+
+    if (quiz.questionsLevel == enQuestionsLevel::mix)
+    {
+        questionInfo.questionsLevel = (enQuestionsLevel)randomNumber(enQuestionsLevel::easy, enQuestionsLevel::mix);
+        questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
     }
     else
     {
-        questionInfo = checkDifficulty(questionInfo.questionsLevel, questionInfo);
+        questionInfo = checkDifficulty(quiz.questionsLevel, questionInfo);
     }
 
-    cout << "Question [" << questionInfo.numberOfThisRound << "/" << numOfQuestions << "]" << endl;
+    return questionInfo;
+}
+
+stQuestionInfo readQuestion(stQuestionInfo questionInfo, stQuiz quiz)
+{
+    questionInfo = generateQuestion(quiz, questionInfo);
+
+    cout << "Question [" << questionInfo.numberOfThisQuestion << "/" << quiz.numberOfQuestions << "]" << endl;
     cout << questionInfo.firstNumber << endl;
     cout << questionInfo.secondNumber << " " << questionInfo.operation << endl;
     cout << "----------------" << endl;
@@ -217,13 +246,13 @@ bool checkAnswer(int answer, stQuestionInfo questionInfo)
     }
 }
 
-void printCheckAnswer(stQuestionInfo questionInfo)
+void printCheckAnswer(stQuestionInfo questionInfo, stQuiz &quiz)
 {
     if (checkAnswer(questionInfo.answer, questionInfo))
     {
         cout << "Right Answer :)" << endl;
         system("color 2F");
-        numOfRightAnswers++;
+        quiz.numberOfRightAnswers++;
     }
     else
     {
@@ -231,38 +260,23 @@ void printCheckAnswer(stQuestionInfo questionInfo)
         cout << "Wrong Answer :(" << endl;
         cout << "The Right Answer is: " << getAnswerOfQuestion(questionInfo) << endl;
         system("color 4F");
-        numOfWrongAnswers++;
+        quiz.numberOfWrongAnswers++;
     }
 }
 
-void readAndPrintMultipleQuestions(stQuestionInfo questionInfo, int numOfQuestions)
+void readAndPrintMultipleQuestions(stQuiz &quiz, stQuestionInfo questionInfo)
 {
-    enOpType opType;
-    enQuestionsLevel questionsLevel;
-    for (int i = 1; i <= numOfQuestions; i++)
+    for (int i = 1; i <= quiz.numberOfQuestions; i++)
     {
-        questionInfo.numberOfThisRound = i;
+        quiz.questionList[i].numberOfThisQuestion = i;
 
         cout << "\n==============================" << endl;
 
-        questionInfo = readQuestion(questionInfo, numOfQuestions, opType, questionsLevel);
+        quiz.questionList[i] = readQuestion(quiz.questionList[i], quiz);
 
-        printCheckAnswer(questionInfo);
+        printCheckAnswer(quiz.questionList[i], quiz);
         cout << "==============================" << endl;
     }
-    if (questionInfo.opType == enOpType::Mix)
-    {
-        return;
-    }
-
-    questionInfo.opType = opType;
-
-    if (questionInfo.questionsLevel == enQuestionsLevel::mix)
-    {
-        return;
-    }
-
-    questionInfo.questionsLevel = questionsLevel;
 }
 
 string getQuestionsLevel(enQuestionsLevel questionsLevel)
@@ -350,18 +364,18 @@ bool restartGame()
     return false;
 }
 
-void printPassOrFail(stQuestionInfo questionInfo, int numOfQuestions)
+void printPassOrFail(stQuestionInfo questionInfo, stQuiz quiz)
 {
     cout << "\n-----------------------------------" << endl
          << endl;
-    if (numOfRightAnswers > numOfWrongAnswers)
+    if (quiz.numberOfRightAnswers > quiz.numberOfWrongAnswers)
     {
         playWinSound();
         system("color 2F");
         cout << "    Final Results is PASS :)    " << endl
              << endl;
     }
-    else if (numOfRightAnswers == numOfWrongAnswers)
+    else if (quiz.numberOfRightAnswers == quiz.numberOfWrongAnswers)
     {
         playDrawSound();
         system("color 6F");
@@ -378,11 +392,11 @@ void printPassOrFail(stQuestionInfo questionInfo, int numOfQuestions)
     cout << "-----------------------------------" << endl
          << endl;
 
-    cout << "Number Of Questions: " << numOfQuestions << endl;
-    cout << "Questions Level    : " << getQuestionsLevel(questionInfo.questionsLevel) << endl;
-    cout << "OpType             : " << getOpType(questionInfo.opType) << endl;
-    cout << "Number Of Right Answers: " << numOfRightAnswers << "/" << numOfQuestions << endl;
-    cout << "Number Of Wrong Answers: " << numOfWrongAnswers << "/" << numOfQuestions << endl
+    cout << "Number Of Questions: " << quiz.numberOfQuestions << endl;
+    cout << "Questions Level    : " << getQuestionsLevel(quiz.questionsLevel) << endl;
+    cout << "OpType             : " << getOpType(quiz.opType) << endl;
+    cout << "Number Of Right Answers: " << quiz.numberOfRightAnswers << "/" << quiz.numberOfQuestions << endl;
+    cout << "Number Of Wrong Answers: " << quiz.numberOfWrongAnswers << "/" << quiz.numberOfQuestions << endl
          << endl;
     cout << "-----------------------------------" << endl
          << endl;
@@ -394,19 +408,20 @@ void StartGame()
     do
     {
         resetScreen();
-        int numOfQuestions;
 
         stQuestionInfo questionInfo;
 
-        readNumberOfQuestions(numOfQuestions);
+        stQuiz quiz;
 
-        questionInfo.questionsLevel = readQuestionsLevel();
+        quiz.numberOfQuestions = readNumberOfQuestions();
 
-        questionInfo.opType = readOperationType();
+        quiz.questionsLevel = readQuestionsLevel();
 
-        readAndPrintMultipleQuestions(questionInfo, numOfQuestions);
+        quiz.opType = readOperationType();
 
-        printPassOrFail(questionInfo, numOfQuestions);
+        readAndPrintMultipleQuestions(quiz, questionInfo);
+
+        printPassOrFail(questionInfo, quiz);
 
     } while (restartGame());
 }
